@@ -44,7 +44,7 @@ public class StatisticWebService extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int compteurNonPopularWS=0;//Compteur pour savoir s'il existe des webservices qui sont pas populair
+		int compteurNonPopularWS=0;//Compteur pour savoir s'il existe des webservices qui sont pas populaires
 		List<Category> listCategory=new ArrayList<Category>();
 		listCategory=categoryDAO.findAll();
 		List<PopularWebServices> popularWebServiceList=new ArrayList<PopularWebServices>();
@@ -56,8 +56,15 @@ public class StatisticWebService extends HttpServlet {
 				compteurNonPopularWS++;
 			}
 		}
+		int compteurComparaison=popularWebServiceList.get(0).getNombreWebServices();
+		for(PopularWebServices popularWS:popularWebServiceList){
+			if(compteurComparaison >popularWS.getNombreWebServices()){
+				compteurComparaison=popularWS.getNombreWebServices();
+			}
+		}
 		if(compteurNonPopularWS!=0){
-			popularWebServiceList.add(new PopularWebServices("Others",1));
+			Collections.sort(popularWebServiceList);
+			popularWebServiceList.add(new PopularWebServices("Others",compteurComparaison));
 		}
 		Collections.sort(popularWebServiceList);
 	    request.setAttribute("popularWebServiceList", popularWebServiceList);
