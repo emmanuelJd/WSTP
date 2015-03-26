@@ -158,9 +158,11 @@ public class TagWS extends HttpServlet {
 					}
 					//si l'association existe on relie juste les deux
 					else{
-						wsta.incrementWeightSum(tagWeight);
-						wsta.incrementVoters(1);
-						wstaDAO.update(wsta);
+						if(user.getLevel()>0){
+							wsta.incrementWeightSum(tagWeight);
+							wsta.incrementVoters(1);
+							wstaDAO.update(wsta);
+							}
 					}
 					
 				}
